@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>Tripod</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -24,11 +23,11 @@
             <h1>All Experiments</h1>
         </div>
 
-        <div class="row">
+        <div class="row pt-3">
             {% if experiments_list %}
-                <ul>
+                <ul class="list-group">
                 {% for experiment in experiments_list %}
-                    <li><a href="{% url 'exp' experiment.id %}">{{ experiment.experiment_name }} - {{ experiment.pub_date }}</a></li>
+                    <li class="list-group-item"><a href="{% url 'exp' experiment.id %}">{{ experiment.experiment_name }} - {{ experiment.pub_date }}</a></li>
                 {% endfor %}
                 </ul>
             {% else %}
@@ -36,8 +35,12 @@
             {% endif %}
         </div>
 
-        <div class="row">
-            <button type="button" class="btn btn-primary">Add Experiment</button>
+        <div class="row pt-3">
+
+            <form action="{% url 'addexp' %}", method="get">
+              <input type="submit" class="btn btn-primary" value="Add Experiment">
+            </form>
+
         </div>
     </div>
 
