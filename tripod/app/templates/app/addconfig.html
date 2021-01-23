@@ -33,24 +33,35 @@
         </div>
 
         <div class="row">
-            <h2>All Configs</h2>
+            <h2>Add New Configs</h2>
         </div>
 
 
         <div class="row">
-            <ul>
-            {% for config in experiment.config_set.all %}
-                <li><a href="{% url 'config' config.id %}">{{ config.config_name }} - {{ config.pub_date }}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
+        <form action="{% url 'addconfig' experiment.id %}" method="post">
 
-        <div class="row pt-3">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.experiment.errors }}
+                <label for="experiment_name">For Experiment: </label>
+                {{ form.experiment }}
+            </div>
 
-            <form action="{% url 'addconfig' experiment.id %}" method="get">
-              <input type="submit" class="btn btn-primary" value="Add Config">
-            </form>
+            <div class="form-group">
+                {{ form.config_name.errors }}
+                <label for="experiment_name">Config Name</label>
+                {{ form.config_name }}
+            </div>
 
+            <div class="form-group">
+                {{ form.config_settings.errors }}
+                <label for="experiment_name">Config Setting</label>
+                {{ form.config_settings }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
         </div>
 
     </div>
