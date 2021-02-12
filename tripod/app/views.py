@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Experiment, Config, ExperimentForm, ConfigForm
 from django.shortcuts import render, get_object_or_404
+from .core.default import Nodes, GPUs
 from .utils import check_settings
 
 def index(request):
@@ -36,8 +37,25 @@ def addexp(request):
 
 def config(request, config_id):
     config = get_object_or_404(Config, pk=config_id)
-    context = {'config': config}
-    return render(request, 'app/config.html', context)
+
+    if request.method == 'POST':
+        print(request.POST)
+        context = {
+                    'config': config,
+                    'scripts': '1',
+                    'error': '2',
+                    'nodes': Nodes,
+                    'gpus': GPUs,
+                   }
+        return render(request, 'app/config.html', context)
+
+    else:
+        context = {
+                    'config': config,
+                    'nodes': Nodes,
+                    'gpus': GPUs,
+                   }
+        return render(request, 'app/config.html', context)
 
 
 def addconfig(request, experiment_id):
