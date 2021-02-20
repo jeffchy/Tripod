@@ -61,6 +61,11 @@
 
         <div class="row pt-5">
             <button type="submit" class="btn btn-primary">Gen Scripts</button>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
         </div>
 
         </form>

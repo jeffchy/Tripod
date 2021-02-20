@@ -42,22 +42,35 @@
 
             {% csrf_token %}
             <div class="form-group">
-                {{ form.experiment.errors }}
+                {% if form.experiment.errors %}
+                    <div class="alert alert-danger" role="alert"> {{ form.experiment.errors }} </div>
+                {% endif %}
+
                 <label for="experiment_name">For Experiment: </label>
                 {{ form.experiment }}
             </div>
 
             <div class="form-group">
-                {{ form.config_name.errors }}
+                {% if form.config_name.errors %}
+                    <div class="alert alert-danger" role="alert"> {{ form.config_name.errors }} </div>
+                {% endif %}
                 <label for="experiment_name">Config Name</label>
                 {{ form.config_name }}
             </div>
 
             <div class="form-group">
-                {{ form.config_settings.errors }}
+                {% if form.config_settings.errors %}
+                    <div class="alert alert-danger" role="alert"> {{ form.config_settings.errors }} </div>
+                {% endif %}
                 <label for="experiment_name">Config Setting</label>
                 {{ form.config_settings }}
             </div>
+
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
 
             <button type="submit" class="btn btn-primary">Submit</button>
 

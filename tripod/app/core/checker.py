@@ -1,4 +1,5 @@
-from example_configs import example_env_config, example_config_config
+from .example_configs import example_env_config, example_config_config
+import json
 
 def check_experiment_settings(config):
     error = ''
@@ -24,5 +25,17 @@ def check_experiment_settings(config):
 
         if len(not_appear_keys) > 0 or len(invalid_keys) > 0:
             error += "Should have keys: {}. \n".format(example_env_config.keys())
+
+    return error
+
+
+def check_config_settings(config):
+    error = ''
+
+    try:
+        config = config.replace("'", '"')
+        config = json.loads(config)
+    except:
+        error = "Not a valid dict. "
 
     return error

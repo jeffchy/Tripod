@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Experiment, Config, ExperimentForm, ConfigForm
 from django.shortcuts import render, get_object_or_404
 from .core.default import Nodes, GPUs
-from .utils import check_settings
+from .core.checker import check_config_settings, check_experiment_settings
 
 def index(request):
     experiments_list = Experiment.objects.order_by('-pub_date')
@@ -39,6 +39,9 @@ def config(request, config_id):
     config = get_object_or_404(Config, pk=config_id)
 
     if request.method == 'POST':
+
+
+
         print(request.POST)
         context = {
                     'config': config,
@@ -60,22 +63,29 @@ def config(request, config_id):
 
 def addconfig(request, experiment_id):
     experiment = get_object_or_404(Experiment, pk=experiment_id)
+    error = ''
 
     if request.method == 'POST':
         form = ConfigForm(request.POST)
         if form.is_valid():
             add_exp_id = form.cleaned_data['experiment'].id
 
-            # flag, error = check_settings(form.cleaned_data['settings'])
-            # if flag:
-            form.save()
-            return HttpResponseRedirect('/app/exp/{}'.format(add_exp_id))
+            settings = form.cleaned_data['config_settings']
+            error += check_config_settings(settings)
+            print(settings, error)
+            if error:
+                context = {'form': form, 'experiment': experiment, 'error': error}
+                return render(request, 'app/addconfig.html', context)
+            else:
+                form.save()
+
+                return HttpResponseRedirect('/app/exp/{}'.format(add_exp_id))
         else:
-            print(1)
+            error += "Invalid Form"
 
     else:
         form = ConfigForm()
 
-    context = {'form': form, 'experiment': experiment}
+    context = {'form': form, 'experiment': experiment, 'error': error}
 
     return render(request, 'app/addconfig.html', context)
